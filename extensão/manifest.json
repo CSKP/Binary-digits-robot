@@ -1,0 +1,22 @@
+{
+	"manifest_version":2,
+	"description":"This extension is a robot that automate operations in Binary.com web site",
+	"name":"Binary automated robot",
+	"version":"1.0",
+	"browser_action":{
+		"default_icon":"icon.png",
+		"default_popup":"popup.html"
+	},
+	"icons":{
+		"64":"icon.png"
+	},
+	"permissions":[
+	"activeTab",
+	"https://ajax.googleapis.com/"
+	],
+	"content_scripts":[{
+		"matches":["https://www.binary.com/*"],
+		"js":["content.js"]
+	}]
+
+}
