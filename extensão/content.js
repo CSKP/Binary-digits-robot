@@ -25,6 +25,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
 			var div3 = document.createElement('div')
 			div3.style = 'height:50%;width:100%;display:flex;flex-direction:row;justify-content:center;align-items:center'
 			var inputStyle = 'outline:none;margin:5px;text-align:center;border:1px solid white;width:20%; height:20px;background-color:transparent;color:white;margin-top:5px'
+			var aStyle = 'font-family: Verdana,sans-serif;padding: 6px 16px;font-size:14px;text-decoration:none;border:1px solid white;margin:5px;cursor:default;background-color:transparent;color:white;transition:all .2s'
 			var inputStop = document.createElement('input')
 			inputStop.placeholder = 'stop'
 			inputStop.id = 'inputStop';
@@ -51,10 +52,19 @@ chrome.runtime.onMessage.addListener(function (msg, sender, response) {
 			span2.id = 'spanEarn'
 			span2.style = 'color:white;margin:5px'
 			span2.innerText = '0'
+			var infoButton = document.createElement('div')
+			infoButton.id = 'infoButton'
+			infoButton.style = aStyle
+			infoButton.style.border = 'none'
+			infoButton.style.textDecoration = 'underline'
+			infoButton.style.textDecorationColor = 'white'			
+			infoButton.style.cursor = 'pointer'			
+			infoButton.innerText = 'info'
+			infoButton.addEventListener('click',infos)
+			div4.appendChild(infoButton)
 			div4.appendChild(span1)
 			div4.appendChild(span2)
 			div2.appendChild(div4)
-			var aStyle = 'font-family: Verdana,sans-serif;padding: 6px 16px;font-size:14px;text-decoration:none;border:1px solid white;margin:5px;cursor:default;background-color:transparent;color:white;transition:all .2s'
 			var startButton = document.createElement('a')
 			startButton.style = aStyle
 			startButton.innerText = 'start'
@@ -193,9 +203,11 @@ function disableElements(){
 	document.querySelector('#inputAmount').style.opacity = 0.4
 	document.querySelector('#inputStop').style.opacity = 0.4
 	document.querySelector('#inputTarget').style.opacity = 0.4
+	document.querySelector('#infoButton').style.opacity = 0.4
 	document.querySelector('#inputAmount').disabled = true
 	document.querySelector('#inputStop').disabled = true
 	document.querySelector('#inputTarget').disabled = true
+	document.querySelector('#infoButton').style.pointerEvents = 'none'
 }
 
 function enableElements(){
@@ -203,9 +215,11 @@ function enableElements(){
 	document.querySelector('#inputAmount').style.opacity = 1
 	document.querySelector('#inputStop').style.opacity = 1
 	document.querySelector('#inputTarget').style.opacity = 1
+	document.querySelector('#infoButton').style.opacity = 1
 	document.querySelector('#inputAmount').disabled = false
 	document.querySelector('#inputStop').disabled = false
 	document.querySelector('#inputTarget').disabled = false
+	document.querySelector('#infoButton').style.pointerEvents = 'auto'
 
 }
 
@@ -240,6 +254,48 @@ function adjust(){
 		el = document.querySelector("#amount_type")
 		el[1].selected = true
 	},2000)
+}
+
+function infos(){
+	openInfos()
+	//var container = document.querySelector("#extensionContainer")
+	var backgroundContainer = document.createElement('div')
+	//rgba(0,0,0,0.5)
+	backgroundContainer.id ='backgroundContainer'
+	backgroundContainer.style = 'top:-100vh;position:fixed;height: 100vh;width:100vw;background-color: transparent;z-index:3;display:flex;flex-direction:center;justify-content:center;align-items: center;transition: all .4s'
+	var modal = document.createElement('div')
+	modal.style = 'z-index:4;height:80%;width:80%;background-color:rgba(62, 57, 57, 0.98);border-radius:10px;display:flex;flex-direction:column;align-items:center'
+	backgroundContainer.appendChild(modal)
+	var closeButton = document.createElement('div')
+	closeButton.style = 'height:10px;width:14px;color:white;border-radius:5px;background-color:rgba(228, 66, 66,0.8);align-self:flex-end;margin-top:5px;margin-right:7px;cursor:pointer;padding: 0px 5px;'
+	closeButton.addEventListener('click',closeInfos)
+	modal.appendChild(closeButton)
+	document.body.insertBefore(backgroundContainer,document.body.firstChild)
+	setTimeout(() =>{		
+	animeInfos()
+	},100)
+}	
+
+function openInfos(){
+	document.querySelector("#extensionContainer").style.bottom = '-120px'
+}
+
+function closeInfos(){
+	unanimeInfos()
+	setTimeout(() =>{		
+	document.body.removeChild(document.body.firstChild)
+	document.querySelector("#extensionContainer").style.bottom = '0px'	
+	},100)
+}
+
+function animeInfos(){
+	document.querySelector('#backgroundContainer').style.top ='0vh'
+	document.querySelector('#backgroundContainer').style.backgroundColor ='rgba(0,0,0,0.5)'
+}
+
+function unanimeInfos(){
+	document.querySelector('#backgroundContainer').style.top ='-100vh'
+	document.querySelector('#backgroundContainer').style.backgroundColor ='transparent'
 }
 
 
